@@ -20,7 +20,14 @@ const argv = require('yargs').options({
 //         (console.log("error", e))
 //     });
 
-const getInfo = (direccion) => {
-
-
+const getInfo = async(direccion) => {
+    const lug = await lugar.getLugarLatLng(direccion);
+    const clim = await clima.getClima(lug.latitud, lug.longitud);
+    return { lug, clim };
 }
+
+getInfo(argv.direccion)
+    .then((data) => { console.log(`El clima en ${data.lug.direccion} es de ${data.clim} ºC`) })
+    .catch(e => {
+        console.log("error", e);
+    });
